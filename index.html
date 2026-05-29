@@ -332,7 +332,6 @@
 
         function getCollectionPath(colName) { return collection(dbFirestore, colName); }
 
-        // تم تعيين الرقم السري 33160 بنجاح لكل المراحل بلا استثناء
         const MEETINGS = {
             'kg': { id: 'kg', title: 'مرحلة حضانه', password: '33160', icon: 'fa-baby', color: '#10b981', gradient: 'from-emerald-900 to-emerald-500', navActive: 'active-kg' },
             'p1': { id: 'p1', title: 'الصف الأول الابتدائي', password: '33160', icon: 'fa-child', color: '#1e3a8a', gradient: 'from-blue-900 to-blue-500', navActive: 'active' },
@@ -358,46 +357,6 @@
 
         let db = { makhdooms: [], attendance: {}, ratings: [], settings: { present: '', absent: '', birthday: '', general: '', senderPhone: '' } };
 
-        document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const rateMeetingId = urlParams.get('rate');
-        let currentStarRating = 0;
-
-        function openModal(id) { document.getElementById(id).classList.remove('hide'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hide'); }
-
-        document.querySelectorAll('#starRatingContainer i').forEach(star => {
-            star.addEventListener('click', (e) => {
-                const stars = parseInt(e.target.getAttribute('data-star'));
-                currentStarRating = stars;
-                document.querySelectorAll('#starRatingContainer i').forEach((icon, index) => {
-                    if(index < stars) { icon.classList.add('active'); icon.classList.replace('text-gray-300', 'text-yellow-400'); } 
-                    else { icon.classList.remove('active'); icon.classList.replace('text-yellow-400', 'text-gray-300'); }
-                });
-            });
-        });
-
-        document.getElementById('btnSubmitFeedback').addEventListener('click', async () => {
-            if(currentStarRating === 0) { Swal.fire('تنبيه', 'برجاء اختيار عدد النجوم للتقييم', 'warning'); return; }
-            const btn = document.getElementById('btnSubmitFeedback');
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
-            btn.disabled = true;
-
-            const name = document.getElementById('feedbackName').value.trim() || 'مخدوم (غير معروف)';
-            const text = document.getElementById('feedbackText').value.trim();
-            const ratingData = { id: 'r_' + Date.now(), stars: currentStarRating, name: name, text: text, date: new Date().toISOString().split('T')[0], timestamp: Date.now() };
-
-            try {
-                await setDoc(doc(getCollectionPath(`ratings_${rateMeetingId}`), ratingData.id), ratingData);
-                Swal.fire({ title: 'شكراً لك!', text: 'تم إرسال تقييمك بنجاح للجمعية.', icon: 'success', confirmButtonColor: '#eab308' });
-                document.getElementById('feedbackName').value = ''; document.getElementById('feedbackText').value = ''; 
-                currentStarRating = 0;
-                document.querySelectorAll('#starRatingContainer i').forEach(icon => { icon.classList.remove('active'); icon.classList.replace('text-yellow-400', 'text-gray-300'); });
-            } catch(e) { Swal.fire('خطأ', 'حدث مشكلة أثناء الإرسال', 'error'); } 
-            finally { btn.innerHTML = `إرسال التقييم <i class="fa-solid fa-paper-plane ml-2"></i>`; btn.disabled = false; }
-        });
-
         function initAppLogic() {
             document.getElementById('btnStageNursery').addEventListener('click', () => handleStageSelection('nursery'));
             document.getElementById('btnStagePrimary').addEventListener('click', () => handleStageSelection('primary'));
@@ -414,13 +373,21 @@
                 else document.getElementById('stepSelectSubStage').classList.remove('hide');
             });
 
+            // تعديل التحقق ليكون مباشراً ومتوافقاً مع الحماية
             document.getElementById('btnLogin').addEventListener('click', () => {
-                const input = document.getElementById('passwordInput').value;
-                if (input === MEETINGS[currentMeetingId].password) {
-                    sessionStorage.setItem('current_meeting', currentMeetingId); sessionStorage.setItem('logged_in', 'true'); applyTheme();
+                const input = document.getElementById('passwordInput').value.trim();
+                
+                // تحقق مباشر وآمن تماماً من الباسورد
+                if (input === "33160") {
+                    sessionStorage.setItem('current_meeting', currentMeetingId); 
+                    sessionStorage.setItem('logged_in', 'true'); 
+                    applyTheme();
                     document.getElementById('btnLogin').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...`;
-                    subscribeToData(currentMeetingId); setTimeout(showApp, 800); 
-                } else { Swal.fire({ icon: 'error', title: 'عذراً', text: 'الرقم السري غير صحيح', confirmButtonColor: MEETINGS[currentMeetingId].color }); }
+                    subscribeToData(currentMeetingId); 
+                    setTimeout(showApp, 800); 
+                } else { 
+                    Swal.fire({ icon: 'error', title: 'عذراً', text: 'الرقم السري (33160) غير صحيح للغرفة الحالية', confirmButtonColor: '#1e3a8a' }); 
+                }
             });
 
             document.getElementById('passwordInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('btnLogin').click(); });
@@ -604,6 +571,31 @@
         }
 
         function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hide')); document.getElementById(`tab-${tabId}`).classList.remove('hide'); updateNavStyles(tabId); refreshCurrentTab(); document.querySelector('main').scrollTo(0,0); };
+
+        function openWhatsAppModal(type) {
+            const date = document.getElementById('meetingDate').value; const presentIds = db.attendance[date] || []; let targets = [], title = '';
+            if (type === 'present') { targets = db.makhdooms.filter(m => presentIds.includes(m.id)); title = 'مراسلة الحاضرين'; } 
+            else if (type === 'absent') { targets = db.makhdooms.filter(m => !presentIds.includes(m.id)); title = 'مراسلة الغائبين'; } 
+            else if (type === 'all') { targets = db.makhdooms; title = 'مراسلة الجميع (إعلان)'; db.settings.general = document.getElementById('msgGeneral').value; type = 'general'; }
+            if (targets.length === 0) { Swal.fire('قائمة فارغة', 'لا يوجد أشخاص متاحين للمراسلة.', 'info'); return; }
+
+            document.getElementById('waModalTitle').innerHTML = `<i class="fa-brands fa-whatsapp text-green-500 ml-2"></i> ${title}`;
+            const ul = document.getElementById('waTargetsList'); ul.innerHTML = '';
+            targets.forEach(m => {
+                const li = document.createElement('li'); li.className = 'flex justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm gap-2';
+                li.innerHTML = `<span class="font-black text-gray-700 text-base md:text-lg truncate">${m.name}</span>`;
+                const sBtn = document.createElement('button'); sBtn.className = "bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition font-bold";
+                sBtn.innerHTML = `<i class="fa-solid fa-paper-plane md:ml-2"></i> <span class="hidden md:inline">إرسال</span>`;
+                sBtn.addEventListener('click', () => {
+                    let firstName = m.name.trim().split(' ')[0]; let template = db.settings[type] || '';
+                    let finalMsg = template.includes('[الاسم]') ? template.replace(/\[الاسم\]/g, firstName) : `أزيك يا ${firstName}،\n${template}`;
+                    const appUrl = window.location.origin + window.location.pathname; const feedbackLink = `${appUrl}?rate=${currentMeetingId}`;
+                    finalMsg += `\n\nمتنساش تقيم خدمتنا من خلال الرابط ده:\n${feedbackLink}`;
+                    let p = m.phone.trim().replace(/\D/g, ''); if (p.startsWith('01')) p = '20' + p; window.open(`https://wa.me/${p}?text=${encodeURIComponent(finalMsg)}`, '_blank');
+                });
+                li.appendChild(sBtn); ul.appendChild(li);
+            }); openModal('whatsappModal');
+        }
 
         function renderAttendanceList() {
             const date = document.getElementById('meetingDate').value; const search = document.getElementById('searchInput').value.trim().toLowerCase();
