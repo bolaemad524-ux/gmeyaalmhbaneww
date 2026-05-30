@@ -137,6 +137,27 @@
                     </button>
                 </div>
             </div>
+
+            <div id="stepSelectTargetType" class="hide flex flex-col gap-4 max-w-xl mx-auto animate-fade-in">
+                <h3 id="targetTypeTitle" class="text-2xl font-black text-gray-800 mb-2">تحديد واجهة العرض والافتقاد</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="window.setTargetType('servants')" class="group relative bg-white border-2 border-blue-100 hover:border-blue-500 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center gap-4 transform hover:-translate-y-1">
+                        <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-inner">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <h4 class="text-xl font-black text-gray-800">خدام المرحلة</h4>
+                    </button>
+                    <button onclick="window.setTargetType('makhdooms')" class="group relative bg-white border-2 border-orange-100 hover:border-orange-500 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center gap-4 transform hover:-translate-y-1">
+                        <div class="bg-orange-100 text-orange-600 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-inner">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h4 class="text-xl font-black text-gray-800">مخدومين المرحلة</h4>
+                    </button>
+                </div>
+                <button onclick="window.backToPassword()" class="w-full mt-4 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200 transition-all duration-300">
+                    رجوع للخلف
+                </button>
+            </div>
         </div>
     </div>
 
@@ -193,7 +214,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
                     <h2 class="text-2xl font-black text-gray-800 flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
                         <span class="bg-gray-100 text-gray-600 w-10 h-10 rounded-lg flex items-center justify-center shadow-inner dynamic-theme-text"><i class="fa-solid fa-list-check"></i></span>
-                        سجل الحضور
+                        سجل الحضور - <span id="sectionTypeTitle"></span>
                     </h2>
                     
                     <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
@@ -217,18 +238,18 @@
                                class="w-full pr-14 pl-4 py-4 rounded-2xl border-2 border-gray-100 outline-none bg-white shadow-sm transition font-semibold focus:ring-4 dynamic-theme-border">
                     </div>
                     <button onclick="window.openModal('addMakhdoomModal')" class="text-white px-8 py-4 rounded-2xl font-black shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap text-lg dynamic-theme-btn">
-                        <i class="fa-solid fa-user-plus ml-2 text-xl"></i> إضافة مخدوم جديد
+                        <i class="fa-solid fa-user-plus ml-2 text-xl"></i> <span id="btnAddText">إضافة مخدوم جديد</span>
                     </button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <button onclick="window.openWhatsAppModal('present')" class="bg-white border-2 border-green-100 hover:border-green-400 text-green-600 hover:bg-green-50 p-4 rounded-2xl font-bold transition flex flex-col md:flex-row items-center justify-center gap-2 shadow-sm text-sm md:text-base">
                         <i class="fa-brands fa-whatsapp text-2xl md:text-xl"></i> 
-                        <span class="text-center">مراسلة الحاضرين</span>
+                        <span class="text-center" id="lblPresentWa">مراسلة الحاضرين</span>
                     </button>
                     <button onclick="window.openWhatsAppModal('absent')" class="bg-white border-2 border-red-100 hover:border-red-400 text-red-500 hover:bg-red-50 p-4 rounded-2xl font-bold transition flex flex-col md:flex-row items-center justify-center gap-2 shadow-sm text-sm md:text-base">
                         <i class="fa-brands fa-whatsapp text-2xl md:text-xl"></i> 
-                        <span class="text-center">مراسلة الغائبين</span>
+                        <span class="text-center" id="lblAbsentWa">مراسلة الغائبين</span>
                     </button>
                 </div>
 
@@ -238,7 +259,7 @@
                             <thead class="bg-gray-50 text-gray-500 border-b-2">
                                 <tr>
                                     <th class="py-4 px-6 font-bold w-24">حضر اليوم؟</th>
-                                    <th class="py-4 px-6 font-bold">اسم المخدوم</th>
+                                    <th class="py-4 px-6 font-bold" id="thName">اسم المخدوم</th>
                                     <th class="py-4 px-6 font-bold text-center">مرات الحضور</th>
                                     <th class="py-4 px-6 font-bold">رقم الواتساب</th>
                                     <th class="py-4 px-6 font-bold text-center">إجراءات</th>
@@ -251,7 +272,7 @@
                         <div class="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fa-solid fa-users-slash text-4xl text-gray-300"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-500 mb-2">لا يوجد مخدومين!</h3>
+                        <h3 class="text-xl font-bold text-gray-500 mb-2">القائمة فارغة!</h3>
                     </div>
                 </div>
             </div>
@@ -262,8 +283,8 @@
                         <i class="fa-solid fa-gift text-2xl"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-black text-gray-800">أعياد ميلاد المخدومين</h2>
-                        <p class="text-gray-500 text-sm font-semibold mt-1">المخدومين الذين يوافق عيد ميلادهم خلال الـ 3 شهور الماضية وحتى اليوم.</p>
+                        <h2 class="text-2xl font-black text-gray-800" id="lblBirthdayTitle">أعياد ميلاد المخدومين</h2>
+                        <p class="text-gray-500 text-sm font-semibold mt-1">الذين يوافق عيد ميلادهم خلال الـ 3 شهور الماضية وحتى اليوم.</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="birthdaysList"></div>
@@ -282,8 +303,8 @@
                             <i class="fa-solid fa-star text-2xl"></i>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-black text-gray-800">تقييمات ومقترحات المخدومين</h2>
-                            <p class="text-gray-500 text-sm font-semibold mt-1">تتبع آراء ومقترحات التطوير المرسلة من المخدومين.</p>
+                            <h2 class="text-2xl font-black text-gray-800">تقييمات ومقترحات الخدمة</h2>
+                            <p class="text-gray-500 text-sm font-semibold mt-1">تتبع آراء ومقترحات التطوير المرسلة.</p>
                         </div>
                     </div>
                     <div class="bg-yellow-100 px-6 py-3 rounded-xl border border-yellow-300 text-center">
@@ -320,7 +341,7 @@
                             <h4 class="font-black mb-1">ميزة التقييمات وتخصيص الأسماء</h4>
                             <p class="text-sm font-bold opacity-90 leading-relaxed">
                                 - سيتم إرفاق رابط تقييم الخدمة تلقائياً في نهاية أي رسالة واتساب ترسلها.<br>
-                                - استخدم كلمة <strong>[الاسم]</strong> لتبديلها تلقائياً باسم المخدوم الأول.
+                                - استخدم كلمة <strong>[الاسم]</strong> لتبديلها تلقائياً باسم المخدوم الأول / الخادم الأول.
                             </p>
                         </div>
                     </div>
@@ -350,11 +371,11 @@
                     <hr class="border-gray-100">
                     <div class="bg-yellow-50/50 p-6 rounded-2xl border border-yellow-200 shadow-sm relative">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                            <label class="block text-gray-800 font-black text-lg">
+                            <label class="block text-gray-800 font-black text-lg" id="lblGeneralMsg">
                                 <i class="fa-solid fa-bullhorn text-yellow-500 ml-2 text-xl"></i> رسالة عامة للجميع (إعلان):
                             </label>
                             <button onclick="window.openWhatsAppModal('all')" class="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-6 py-2.5 rounded-xl font-bold transition flex items-center shadow-md w-full md:w-auto justify-center whitespace-nowrap">
-                                <i class="fa-solid fa-paper-plane ml-2"></i> إرسال لجميع المخدومين
+                                <i class="fa-solid fa-paper-plane ml-2"></i> إرسال للجميع
                             </button>
                         </div>
                         <textarea id="msgGeneral" rows="3" placeholder="اكتب هنا إعلان أو رسالة عامة لإرسالها للجميع..." class="w-full p-4 border-2 rounded-xl outline-none resize-none bg-white font-semibold focus:border-yellow-400 focus:ring-2 focus:ring-yellow-100 transition shadow-inner"></textarea>
@@ -419,12 +440,12 @@
     <div id="addMakhdoomModal" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50 hide p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all max-h-[90dvh] flex flex-col">
             <div class="p-6 text-white flex justify-between items-center shrink-0 dynamic-theme-bg">
-                <h3 class="text-xl font-black"><i class="fa-solid fa-user-plus ml-2"></i> إضافة مخدوم جديد</h3>
+                <h3 class="text-xl font-black" id="addModalTitleHead"><i class="fa-solid fa-user-plus ml-2"></i> إضافة مخدوم جديد</h3>
                 <button onclick="window.closeModal('addMakhdoomModal')" class="text-white hover:text-gray-200 transition text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1">
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">اسم المخدوم (مطلوب)</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2" id="lblFormName">اسم المخدوم (مطلوب)</label>
                     <input type="text" id="newMakhdoomName" class="w-full p-4 border-2 rounded-xl outline-none bg-gray-50 font-bold dynamic-theme-border focus:ring-2">
                 </div>
                 <div>
@@ -441,10 +462,10 @@
                 </div>
                 <div class="flex items-center mt-2 bg-green-50 p-4 rounded-xl border border-green-200">
                     <input type="checkbox" id="markPresentNow" checked class="w-6 h-6 text-green-600 rounded border-gray-300 cursor-pointer accent-accent">
-                    <label for="markPresentNow" class="mr-3 text-green-800 font-bold cursor-pointer">تسجيله كحاضر في اجتماع اليوم فوراً</label>
+                    <label for="markPresentNow" class="mr-3 text-green-800 font-bold cursor-pointer" id="lblMarkPresentForm">تسجيله كحاضر في اجتماع اليوم فوراً</label>
                 </div>
                 <button onclick="window.saveNewMakhdoom()" id="btnSaveNew" class="w-full text-white py-4 rounded-xl font-black shadow-lg transition mt-4 text-lg dynamic-theme-btn-main flex justify-center items-center gap-2">
-                    حفظ بيانات المخدوم
+                    حفظ البيانات
                 </button>
             </div>
         </div>
@@ -453,12 +474,12 @@
     <div id="editMakhdoomModal" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50 hide p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all max-h-[90dvh] flex flex-col">
             <div class="p-6 text-white flex justify-between items-center shrink-0 dynamic-theme-bg">
-                <h3 class="text-xl font-black"><i class="fa-solid fa-user-pen ml-2"></i> تعديل بيانات المخدوم</h3>
+                <h3 class="text-xl font-black" id="editModalTitleHead"><i class="fa-solid fa-user-pen ml-2"></i> تعديل البيانات</h3>
                 <button onclick="window.closeModal('editMakhdoomModal')" class="text-white hover:text-gray-200 transition text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1">
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">اسم المخدوم (مطلوب)</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2" id="lblEditFormName">اسم المخدوم (مطلوب)</label>
                     <input type="text" id="editMakhdoomName" class="w-full p-4 border-2 rounded-xl outline-none bg-gray-50 font-bold dynamic-theme-border focus:ring-2">
                 </div>
                 <div>
@@ -514,7 +535,6 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // قاعدة بيانات Firebase الجديدة والمعدلة بالكامل
         const myFirebaseConfig = {
             apiKey: "AIzaSyDeaomkU3tR9EdvuJm8XZZLVQpC6TMcNvg",
             authDomain: "aftkadalmhapa.firebaseapp.com",
@@ -533,7 +553,6 @@
 
         function getCollectionPath(colName) { return collection(dbFirestore, colName); }
 
-        // الخريطة الكاملة للصفوف الدراسية والمراحل
         const MEETINGS = {
             'kg': { id: 'kg', title: 'مرحلة حضانه', password: '111', icon: 'fa-baby', color: '#10b981', gradient: 'from-emerald-900 to-emerald-500', navActive: 'active-kg' },
             'p1': { id: 'p1', title: 'الصف الأول الابتدائي', password: '111', icon: 'fa-child', color: '#1e3a8a', gradient: 'from-blue-900 to-blue-500', navActive: 'active' },
@@ -548,6 +567,7 @@
         };
 
         let currentMeetingId = null;
+        let targetType = null; // 'servants' أو 'makhdooms'
         let currentEditMakhdoomId = null; 
         let userId = null;
         let selectedStageId = null;
@@ -596,7 +616,7 @@
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
             btn.disabled = true;
 
-            const name = document.getElementById('feedbackName').value.trim() || 'مخدوم (غير معروف)';
+            const name = document.getElementById('feedbackName').value.trim() || 'مخدوم/خادم (غير معروف)';
             const text = document.getElementById('feedbackText').value.trim();
             const ratingData = {
                 id: 'r_' + Date.now(),
@@ -631,10 +651,13 @@
                     document.getElementById('ratingMeetingName').innerText = MEETINGS[rateMeetingId].title;
                 } else {
                     const savedMeeting = sessionStorage.getItem('current_meeting');
+                    const savedTargetType = sessionStorage.getItem('target_type');
                     const isLoggedIn = sessionStorage.getItem('logged_in');
-                    if (isLoggedIn === 'true' && savedMeeting && MEETINGS[savedMeeting]) {
+                    if (isLoggedIn === 'true' && savedMeeting && MEETINGS[savedMeeting] && savedTargetType) {
                         currentMeetingId = savedMeeting;
+                        targetType = savedTargetType;
                         applyTheme();
+                        adjustInterfaceLabels();
                         subscribeToData(currentMeetingId);
                         showApp();
                     } else {
@@ -713,16 +736,54 @@
         window.checkPassword = () => {
             const input = document.getElementById('passwordInput').value;
             if (input === MEETINGS[currentMeetingId].password) {
-                sessionStorage.setItem('current_meeting', currentMeetingId);
-                sessionStorage.setItem('logged_in', 'true');
-                applyTheme();
-                document.getElementById('btnLogin').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...`;
-                subscribeToData(currentMeetingId);
-                setTimeout(showApp, 800); 
+                // الانتقال للخطوة الجديدة (اختيار نوع الواجهة خدام أو مخدومين)
+                document.getElementById('stepPassword').classList.add('hide');
+                document.getElementById('stepSelectTargetType').classList.remove('hide');
             } else {
                 Swal.fire({ icon: 'error', title: 'عذراً', text: 'الرقم السري غير صحيح', confirmButtonColor: MEETINGS[currentMeetingId].color });
             }
         };
+
+        window.backToPassword = () => {
+            document.getElementById('stepSelectTargetType').classList.add('hide');
+            document.getElementById('stepPassword').classList.remove('hide');
+        };
+
+        window.setTargetType = (type) => {
+            targetType = type;
+            sessionStorage.setItem('current_meeting', currentMeetingId);
+            sessionStorage.setItem('target_type', type);
+            sessionStorage.setItem('logged_in', 'true');
+            
+            applyTheme();
+            adjustInterfaceLabels();
+            
+            document.getElementById('btnLogin').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...`;
+            subscribeToData(currentMeetingId);
+            setTimeout(showApp, 400);
+        };
+
+        // دالة ديناميكية لتغيير كافة نصوص الواجهة بناءً على اختيار خدام / مخدومين
+        function adjustInterfaceLabels() {
+            const isServant = (targetType === 'servants');
+            const labelText = isServant ? 'الخدام' : 'المخدومين';
+            const singText = isServant ? 'خادم' : 'مخدوم';
+
+            document.getElementById('sectionTypeTitle').innerText = isServant ? 'دفتر افتقاد الخدام' : 'دفتر افتقاد المخدومين';
+            document.getElementById('btnAddText').innerText = `إضافة ${singText} جديد`;
+            document.getElementById('lblPresentWa').innerText = `مراسلة الحاضرين من ${labelText}`;
+            document.getElementById('lblAbsentWa').innerText = `مراسلة الغائبين من ${labelText}`;
+            document.getElementById('thName').innerText = `اسم ${singText}`;
+            document.getElementById('lblBirthdayTitle').innerText = `أعياد ميلاد ${labelText}`;
+            document.getElementById('lblGeneralMsg').innerHTML = `<i class="fa-solid fa-bullhorn text-yellow-500 ml-2 text-xl"></i> رسالة عامة لكافة ${labelText} (إعلان):`;
+            
+            // تعديل نصوص الفورم والمودال داخلياً
+            document.getElementById('addModalTitleHead').innerHTML = `<i class="fa-solid fa-user-plus ml-2"></i> إضافة ${singText} جديد`;
+            document.getElementById('lblFormName').innerText = `اسم ${singText} (مطلوب)`;
+            document.getElementById('lblMarkPresentForm').innerText = `تسجيله كحاضر في اجتماع اليوم فوراً`;
+            document.getElementById('lblEditFormName').innerText = `اسم ${singText} (مطلوب)`;
+            document.getElementById('editModalTitleHead').innerHTML = `<i class="fa-solid fa-user-pen ml-2"></i> تعديل بيانات ${singText}`;
+        }
 
         function subscribeToData(meetingId) {
             if (!userId) return;
@@ -731,20 +792,26 @@
             if (unsubscribeSettings) unsubscribeSettings();
             if (unsubscribeRatings) unsubscribeRatings();
 
-            unsubscribeMakhdooms = onSnapshot(getCollectionPath(`makhdooms_${meetingId}`), (snapshot) => {
+            // مسار السحابة يتغير تلقائياً بناءً على نوع الواجهة المحددة
+            const collectionName = targetType === 'servants' ? `servants_${meetingId}` : `makhdooms_${meetingId}`;
+            const attendanceCollection = targetType === 'servants' ? `attendance_servants_${meetingId}` : `attendance_${meetingId}`;
+            const settingsDocId = targetType === 'servants' ? `servants_${meetingId}` : meetingId;
+
+            unsubscribeMakhdooms = onSnapshot(getCollectionPath(collectionName), (snapshot) => {
                 db.makhdooms = [];
                 snapshot.forEach((doc) => db.makhdooms.push(doc.data()));
                 refreshCurrentTab();
             });
 
-            unsubscribeAttendance = onSnapshot(getCollectionPath(`attendance_${meetingId}`), (snapshot) => {
+            unsubscribeAttendance = onSnapshot(getCollectionPath(attendanceCollection), (snapshot) => {
                 db.attendance = {};
                 snapshot.forEach((doc) => db.attendance[doc.id] = doc.data().presentIds || []);
                 if (!document.getElementById('tab-attendance').classList.contains('hide')) window.renderAttendanceList();
             });
 
-            unsubscribeSettings = onSnapshot(doc(getCollectionPath('settings'), meetingId), (docSnap) => {
+            unsubscribeSettings = onSnapshot(doc(getCollectionPath('settings'), settingsDocId), (docSnap) => {
                 if (docSnap.exists()) db.settings = { ...db.settings, ...docSnap.data() };
+                else db.settings = { present: '', absent: '', birthday: '', general: '', senderPhone: '' };
                 if (!document.getElementById('tab-settings').classList.contains('hide')) loadSettings();
             });
 
@@ -764,7 +831,9 @@
         window.logout = () => {
             sessionStorage.removeItem('logged_in');
             sessionStorage.removeItem('current_meeting');
+            sessionStorage.removeItem('target_type');
             currentMeetingId = null;
+            targetType = null;
             if (unsubscribeMakhdooms) unsubscribeMakhdooms();
             if (unsubscribeAttendance) unsubscribeAttendance();
             if (unsubscribeSettings) unsubscribeSettings();
@@ -774,6 +843,7 @@
             setTimeout(() => {
                 document.getElementById('appContainer').classList.add('hide');
                 document.getElementById('loginScreen').classList.remove('hide');
+                document.getElementById('stepSelectTargetType').classList.add('hide');
                 document.getElementById('btnLogin').innerHTML = `دخول <i class="fa-solid fa-arrow-left"></i>`;
                 window.backToStages();
             }, 500);
@@ -851,16 +921,19 @@
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...`;
             btn.disabled = true;
 
-            const newId = 'm_' + Date.now();
+            const newId = (targetType === 'servants' ? 's_' : 'm_') + Date.now();
             const newData = { id: newId, name: name, phone: phone, dob: dob, address: address };
 
+            const collectionName = targetType === 'servants' ? `servants_${currentMeetingId}` : `makhdooms_${currentMeetingId}`;
+            const attendanceCollection = targetType === 'servants' ? `attendance_servants_${currentMeetingId}` : `attendance_${currentMeetingId}`;
+
             try {
-                await setDoc(doc(getCollectionPath(`makhdooms_${currentMeetingId}`), newId), newData);
+                await setDoc(doc(getCollectionPath(collectionName), newId), newData);
                 if (markPresent) {
                     const date = document.getElementById('meetingDate').value;
                     let currentAtt = db.attendance[date] ? [...db.attendance[date]] : [];
                     currentAtt.push(newId);
-                    await setDoc(doc(getCollectionPath(`attendance_${currentMeetingId}`), date), { presentIds: currentAtt });
+                    await setDoc(doc(getCollectionPath(attendanceCollection), date), { presentIds: currentAtt });
                 }
 
                 window.closeModal('addMakhdoomModal');
@@ -872,7 +945,7 @@
             } catch(e) {
                 Swal.fire('خطأ', 'حدث خطأ بالاتصال بالسحابة', 'error');
             } finally {
-                btn.innerHTML = `حفظ بيانات المخدوم`;
+                btn.innerHTML = `حفظ البيانات`;
                 btn.disabled = false;
             }
         };
@@ -903,13 +976,15 @@
             const btn = document.getElementById('btnSaveEdit');
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحديث...`;
             btn.disabled = true;
+            
+            const collectionName = targetType === 'servants' ? `servants_${currentMeetingId}` : `makhdooms_${currentMeetingId}`;
 
             try {
-                await setDoc(doc(getCollectionPath(`makhdooms_${currentMeetingId}`), currentEditMakhdoomId), {
+                await setDoc(doc(getCollectionPath(collectionName), currentEditMakhdoomId), {
                     id: currentEditMakhdoomId, name: name, phone: phone, dob: dob, address: address
                 }, { merge: true });
                 window.closeModal('editMakhdoomModal');
-                Swal.fire({ title: 'تم التحديث', text: 'تم تحديث بيانات المخدوم بنجاح', icon: 'success', timer: 1500, showConfirmButton: false });
+                Swal.fire({ title: 'تم التحديث', text: 'تم تحديث البيانات بنجاح', icon: 'success', timer: 1500, showConfirmButton: false });
             } catch(e) {
                 Swal.fire('خطأ', 'حدث خطأ أثناء التحديث', 'error');
             } finally {
@@ -919,9 +994,10 @@
         };
 
         window.deleteMakhdoom = (id, name) => {
+            const labelSing = targetType === 'servants' ? 'الخادم' : 'المخدوم';
             Swal.fire({
                 title: 'هل أنت متأكد؟',
-                text: `سيتم حذف المخدوم "${name}" نهائياً من السحابة وسجلاته.`,
+                text: `سيتم حذف ${labelSing} "${name}" نهائياً من السحابة وسجلاته.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -930,15 +1006,17 @@
                 cancelButtonText: 'إلغاء'
             }).then(async (result) => {
                 if (result.isConfirmed) {
+                    const collectionName = targetType === 'servants' ? `servants_${currentMeetingId}` : `makhdooms_${currentMeetingId}`;
+                    const attendanceCollection = targetType === 'servants' ? `attendance_servants_${currentMeetingId}` : `attendance_${currentMeetingId}`;
                     try {
-                        await deleteDoc(doc(getCollectionPath(`makhdooms_${currentMeetingId}`), id));
+                        await deleteDoc(doc(getCollectionPath(collectionName), id));
                         for (let date in db.attendance) {
                             if (db.attendance[date].includes(id)) {
                                 let newAtt = db.attendance[date].filter(attId => attId !== id);
-                                await setDoc(doc(getCollectionPath(`attendance_${currentMeetingId}`), date), { presentIds: newAtt });
+                                await setDoc(doc(getCollectionPath(attendanceCollection), date), { presentIds: newAtt });
                             }
                         }
-                        Swal.fire({ title: 'تم الحذف!', text: 'تم حذف المخدوم بنجاح.', icon: 'success', timer: 1500, showConfirmButton: false });
+                        Swal.fire({ title: 'تم الحذف!', text: 'تم الحذف بنجاح.', icon: 'success', timer: 1500, showConfirmButton: false });
                     } catch(e) {
                         Swal.fire('خطأ', 'حدث مشكلة أثناء الحذف', 'error');
                     }
@@ -952,10 +1030,13 @@
             const index = currentAtt.indexOf(id);
             if (index === -1) currentAtt.push(id);
             else currentAtt.splice(index, 1);
-            await setDoc(doc(getCollectionPath(`attendance_${currentMeetingId}`), date), { presentIds: currentAtt });
+            
+            const attendanceCollection = targetType === 'servants' ? `attendance_servants_${currentMeetingId}` : `attendance_${currentMeetingId}`;
+            await setDoc(doc(getCollectionPath(attendanceCollection), date), { presentIds: currentAtt });
         };
 
         window.saveSettings = async () => {
+            const settingsDocId = targetType === 'servants' ? `servants_${currentMeetingId}` : currentMeetingId;
             const newData = {
                 senderPhone: document.getElementById('senderPhoneSetting').value,
                 general: document.getElementById('msgGeneral').value,
@@ -964,19 +1045,19 @@
                 birthday: document.getElementById('msgBirthday').value
             };
             try {
-                await setDoc(doc(getCollectionPath('settings'), currentMeetingId), newData);
-                Swal.fire({ title: 'تم الحفظ', text: 'تم تحديث الإعدادات السحابية', icon: 'success', timer: 1500, showConfirmButton: false });
+                await setDoc(doc(getCollectionPath('settings'), settingsDocId), newData);
+                Swal.fire({ title: 'تم الحفظ', text: 'تم تحديث الإعدادات السحابية للواجهة الحالية', icon: 'success', timer: 1500, showConfirmButton: false });
             } catch(e) {
                 Swal.fire('خطأ', 'فشل حفظ الإعدادات', 'error');
             }
         };
 
         window.exportData = () => {
-            const dataToExport = { makhdooms: db.makhdooms, attendance: db.attendance, settings: db.settings, ratings: db.ratings };
+            const dataToExport = { targetType: targetType, makhdooms: db.makhdooms, attendance: db.attendance, settings: db.settings, ratings: db.ratings };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport));
             const downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", `backup_${currentMeetingId}_${new Date().toISOString().split('T')[0]}.json`);
+            downloadAnchorNode.setAttribute("download", `backup_${targetType}_${currentMeetingId}_${new Date().toISOString().split('T')[0]}.json`);
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
@@ -987,7 +1068,7 @@
             if (!file) return;
             Swal.fire({
                 title: 'استرداد البيانات',
-                text: 'سيتم استبدال بيانات الصف المفتوح حالياً ببيانات الملف المرفوع.',
+                text: 'سيتم استبدال البيانات السحابية للواجهة الحالية ببيانات الملف المرفوع.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#10b981',
@@ -1002,16 +1083,18 @@
                             if (!importedData.makhdooms || !importedData.attendance || !importedData.settings) throw new Error("ملف غير صالح");
                             Swal.fire({ title: 'جاري الاسترداد...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
                             
-                            await setDoc(doc(getCollectionPath('settings'), currentMeetingId), importedData.settings);
-                            for (let m of importedData.makhdooms) await setDoc(doc(getCollectionPath(`makhdooms_${currentMeetingId}`), m.id), m);
-                            for (let date in importedData.attendance) await setDoc(doc(getCollectionPath(`attendance_${currentMeetingId}`), date), { presentIds: importedData.attendance[date] });
-                            if(importedData.ratings) {
-                                for (let r of importedData.ratings) await setDoc(doc(getCollectionPath(`ratings_${currentMeetingId}`), r.id), r);
-                            }
+                            const collectionName = targetType === 'servants' ? `servants_${currentMeetingId}` : `makhdooms_${currentMeetingId}`;
+                            const attendanceCollection = targetType === 'servants' ? `attendance_servants_${currentMeetingId}` : `attendance_${currentMeetingId}`;
+                            const settingsDocId = targetType === 'servants' ? `servants_${currentMeetingId}` : currentMeetingId;
+
+                            await setDoc(doc(getCollectionPath('settings'), settingsDocId), importedData.settings);
+                            for (let m of importedData.makhdooms) await setDoc(doc(getCollectionPath(collectionName), m.id), m);
+                            for (let date in importedData.attendance) await setDoc(doc(getCollectionPath(attendanceCollection), date), { presentIds: importedData.attendance[date] });
+                            
                             Swal.fire('تم الاسترداد', 'تم استعادة البيانات السحابية بنجاح', 'success');
                             document.getElementById('importFileInput').value = '';
                         } catch (error) {
-                            Swal.fire('خطأ', 'الملف غير مطابق للمواصفات', 'error');
+                            Swal.fire('خطأ', 'الملف المرفوع غير مطابق للمواصفات', 'error');
                             document.getElementById('importFileInput').value = '';
                         }
                     };
@@ -1191,10 +1274,12 @@
             const date = document.getElementById('meetingDate').value;
             const presentIds = db.attendance[date] || [];
             let targets = [], title = '';
+            const isServant = (targetType === 'servants');
+            const labelText = isServant ? 'الخدام' : 'المخدومين';
 
-            if (type === 'present') { targets = db.makhdooms.filter(m => presentIds.includes(m.id)); title = 'مراسلة الحاضرين اليوم'; }
-            else if (type === 'absent') { targets = db.makhdooms.filter(m => !presentIds.includes(m.id)); title = 'مراسلة الغائبين اليوم'; }
-            else if (type === 'all') { targets = db.makhdooms; title = 'مراسلة الجميع (إعلان عام)'; db.settings.general = document.getElementById('msgGeneral').value; type = 'general'; }
+            if (type === 'present') { targets = db.makhdooms.filter(m => presentIds.includes(m.id)); title = `مراسلة الحاضرين من ${labelText}`; }
+            else if (type === 'absent') { targets = db.makhdooms.filter(m => !presentIds.includes(m.id)); title = `مراسلة الغائبين من ${labelText}`; }
+            else if (type === 'all') { targets = db.makhdooms; title = `إعلان عام لكافة ${labelText}`; db.settings.general = document.getElementById('msgGeneral').value; type = 'general'; }
 
             if (targets.length === 0) {
                 Swal.fire('قائمة فارغة', 'لا توجد أسماء متوفرة في القائمة الحالية.', 'info');
